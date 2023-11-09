@@ -65,6 +65,11 @@ mod node_provider_auth_white_list {
             self.list.contains(&node_pub_key)
         }
 
+        #[ink(message)]
+        pub fn get_admin(&self) -> AccountId {
+            self.admin.clone()
+        }
+
         fn equal(&self, key1: &NodePubKey, key2: &NodePubKey) -> bool {
             if key1.len() != key2.len() {
                 return false;
