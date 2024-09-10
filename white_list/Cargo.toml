@@ -63,10 +63,3 @@ std = [
     "serde_json",
 ]
 ink-as-dependency = []
-
-
-# Needed until https://github.com/paritytech/ink/issues/364 is resolved.
-[profile.release]
-overflow-checks = false
-[profile.dev]
-overflow-checks = false
