@@ -2,34 +2,28 @@
 #![feature(proc_macro_hygiene)] // for tests in a separate file
 #![deny(unused_must_use, unused_variables)]
 
-use ink_lang as ink;
-
 #[ink::contract]
 mod node_provider_auth_white_list {
-    use ink_prelude::vec::Vec;
-    use ink_storage::Mapping;
+    use ink::prelude::vec::Vec;
+    use ink::storage::Mapping;
     use scale::{Encode, Decode};
-    use ink_storage::traits::SpreadAllocate;
 
     type NodePubKey = Vec<u8>;
     type NodeType = u8;
 
     #[ink(storage)]
-    #[derive(SpreadAllocate, Default)]
     pub struct WhiteListAuthContract {
         pub admin: AccountId,
         pub list: Mapping<NodePubKey, bool>,
     }
 
-
     impl WhiteListAuthContract {
-
         #[ink(constructor)]
         pub fn new() -> Self {
-            ink_lang::utils::initialize_contract(|contract: &mut Self| {
-                let caller = Self::env().caller();
-                contract.admin = caller;
-            })
+            Self {
+                admin: Self::env().caller(),
+                list: Mapping::new(),
+            }
         }
 
         // This endpoint is triggered by the Cluster Pallet when a node provider joins a cluster
